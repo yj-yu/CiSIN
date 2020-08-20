@@ -17,7 +17,7 @@ from nltk.tokenize import word_tokenize
 
 # -- local import ----------------
 #from utils import get_iou, get_include
-base_dir = '/home_kahlo/jongseok.kim/dataset/LSMDC/' 
+base_dir = 'dataset/LSMDC/'
 
 gender_dir = base_dir + 'supplementary/csv_ids'
 im_dir = base_dir + 'features_mvad/image/'
@@ -117,7 +117,7 @@ class MVADDataset(Dataset):
         gt_gender_t = np.zeros((sN, 2))  # 0: logit, 1: mask
         meta_t, clip_info, s_pids= [], [], []
         s_id, cur_len = 0, 1
-        sent_emb_t[0,0] = self.bert_cls_id 
+        sent_emb_t[0,0] = self.bert_cls_id
         for c_idx, cd in enumerate(agg5):
             # ----- sent processing --------------------------
             sent_emb_t[0, cur_len:cur_len + len(cd['bert'])] = cd['bert']
@@ -133,7 +133,7 @@ class MVADDataset(Dataset):
                     pos_trjs.append(trj_id)
                 gt_position_t[s_id, trjs[trj_id]] = 1.
                 # gender
-                if sd['gender'] != 2: 
+                if sd['gender'] != 2:
                     gt_gender_t[s_id][0] = sd['gender']
                     gt_gender_t[s_id][1] = 1
                 s_pids.append(sd['name'])
@@ -151,7 +151,7 @@ class MVADDataset(Dataset):
             for j in range(sN):
                 if s_pids[i] == s_pids[j]:
                     gt_mat_t[i][j] = 1.
-                
+
         # Build Visual
         hN = self.hN
         im_5, im_msk_5, bbox_meta_5 = [], np.zeros((5,hN)), np.zeros((5,hN,4))
@@ -159,7 +159,7 @@ class MVADDataset(Dataset):
         i3d_rgb_5, i3d_flow_5 = np.zeros((5,hN,1024)), np.zeros((5, hN, 1024))
         face_5, face_msk_5 = np.zeros((5,hN,512)), np.zeros((5,hN))
         gt_vmat, gt_vmat_msk = np.zeros((5*hN, 5*hN)), np.zeros((5*hN, 5*hN))
-        vid_list = []        
+        vid_list = []
         im_cache, hb_agg_cache, i3d_cache, face_cache = {}, {}, {}, {}
 
         # Load track info
@@ -253,7 +253,7 @@ class MVADDataset(Dataset):
                         i3d_length = i3d_cache[i3d_file][hb_id]['len']
                         i3d_rgb_5[c_idx, s_idx] = i3d_feat
                         bbox_meta_5[c_idx, s_idx, 3] = np.clip(i3d_length/300, 0, 1)
-                
+
                 # ----- Load face ---------------------------------------------------------
                 if 'face' in self.feats:
                     face_file = os.path.join(face_dir, mov_id, clip_id, 'head_feature.pkl')
@@ -344,4 +344,4 @@ if __name__ == "__main__":
 
     for res in tqdm(val_dloader):
         a = res
-        
+

@@ -35,22 +35,12 @@ The following dependencies should be installed:
 
 Coming soon,
 
-## Running Experiments
-
-### Feature Extraction
-
-Coming soon,
-
-
 ### CiSIN
 
 To train our model,
 ```bash
 python train.py
 ```
-
-Coming soon,
-
 
 ## Acknowledgement
 
